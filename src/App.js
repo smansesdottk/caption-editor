@@ -534,168 +534,173 @@ function App() {
 
   // --- JSX ---
   return (
-    <div className="container-fluid">
-      <div className="row">
-        {/* Control Panel */}
-        <div className="col-lg-4">
-          {/* Main Controls */}
-          <div className="card mb-3">
-            <div className="card-body">
-              <h5 className="card-title">Project Controls</h5>
-              <div className="mb-3">
-                <label htmlFor="imageUpload" className="form-label">1. Upload Image</label>
-                <input type="file" className="form-control" id="imageUpload" onChange={handleImageUpload} accept="image/*" />
-              </div>
-               <div className="d-flex justify-content-between mb-3">
-                <button className="btn btn-secondary" onClick={undo} disabled={historyIndex === 0}>Undo</button>
-                <button className="btn btn-secondary" onClick={redo} disabled={historyIndex === history.length - 1}>Redo</button>
-              </div>
-              <div className="d-flex justify-content-between">
-                <button className="btn btn-primary" onClick={saveProject}>Save Project</button>
-                <label className="btn btn-primary">Load Project<input type="file" hidden onChange={loadProject} accept=".json" /></label>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Filters */}
-          <div className="card mb-3">
-            <div className="card-body">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <h5 className="card-title mb-0">Image Filters</h5>
-                <button className="btn btn-sm btn-outline-secondary" onClick={resetFilters}>Reset</button>
-              </div>
-              <div className="row g-3">
-                <div className="col-6"><label htmlFor="brightness" className="form-label">Brightness</label><input type="range" className="form-range" id="brightness" min="0" max="200" value={imageFilters.brightness} onChange={e => handleFilterChange('brightness', e.target.value)} onMouseUp={() => commitChanges()} /></div>
-                <div className="col-6"><label htmlFor="contrast" className="form-label">Contrast</label><input type="range" className="form-range" id="contrast" min="0" max="200" value={imageFilters.contrast} onChange={e => handleFilterChange('contrast', e.target.value)} onMouseUp={() => commitChanges()} /></div>
-                <div className="col-6"><label htmlFor="grayscale" className="form-label">Grayscale</label><input type="range" className="form-range" id="grayscale" min="0" max="100" value={imageFilters.grayscale} onChange={e => handleFilterChange('grayscale', e.target.value)} onMouseUp={() => commitChanges()} /></div>
-                <div className="col-6"><label htmlFor="sepia" className="form-label">Sepia</label><input type="range" className="form-range" id="sepia" min="0" max="100" value={imageFilters.sepia} onChange={e => handleFilterChange('sepia', e.target.value)} onMouseUp={() => commitChanges()} /></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Text Controls */}
-          <div className="card mb-3">
-            <div className="card-body">
-              <h5 className="card-title">Text Controls</h5>
-              <button className="btn btn-primary w-100 mb-3" onClick={addTextElement}>Add New Text</button>
-              {activeElement && <button className="btn btn-danger w-100" onClick={deleteActiveElement}>Delete Selected Text</button>}
-            </div>
-          </div>
-
-          {/* Active Element Settings */}
-          {activeElement && (
-            <div className="card mb-3 border-primary">
+    <div>
+      <header style={{ backgroundColor: '#282c34', padding: '20px', color: 'white', textAlign: 'center' }}>
+        <h1>SMANSES CAPTION-EDITOR</h1>
+      </header>
+      <div className="container-fluid">
+        <div className="row">
+          {/* Control Panel */}
+          <div className="col-lg-4">
+            {/* Main Controls */}
+            <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">Edit Selected Text</h5>
-                <div className="mb-3"><label className="form-label">Text</label><textarea className="form-control" rows="2" value={activeElement.text} onChange={(e) => handleElementChange('text', e.target.value)} onBlur={() => commitChanges()}></textarea></div>
-                <div className="row g-3">
-                  <div className="col-6"><label className="form-label">Font</label><select className="form-select" value={activeElement.font} onChange={(e) => handleElementChange('font', e.target.value)} onBlur={() => commitChanges()}>{fonts.map(f => <option key={f} value={f}>{f}</option>)}</select></div>
-                  <div className="col-6"><label className="form-label">Size</label><input type="number" className="form-control" value={activeElement.size} onChange={(e) => handleElementChange('size', Number(e.target.value))} onBlur={() => commitChanges()}/></div>
-                  <div className="col-md-12">
-                    <label className="form-label">Color</label>
-                    <div className="d-flex align-items-center">
-                      <input type="color" className="form-control form-control-color" value={activeElement.color} onChange={(e) => handleElementChange('color', e.target.value)} onBlur={() => commitChanges()}/>
-                      <span className="ms-2">{activeElement.color}</span>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    {colorPalettes.map(palette => (
-                      <div key={palette.name} className="mt-2">
-                        <label className="form-label palette-name">{palette.name}</label>
-                        <div className="palette-container">
-                          {palette.colors.map(color => (
-                            <div 
-                              key={color}
-                              className="color-swatch"
-                              style={{ backgroundColor: color }}
-                              onClick={() => handleColorSwatchClick(color)}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="col-12">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <label className="form-label mb-0">Rotation</label>
-                      <button className="btn btn-sm btn-outline-secondary" onClick={resetRotation}>Reset</button>
-                    </div>
-                    <input type="range" className="form-range" min="-180" max="180" value={activeElement.rotation} onChange={(e) => handleRotationChange(Number(e.target.value))} onMouseUp={handleRotationMouseUp}/>
-                  </div>
+                <h5 className="card-title">Project Controls</h5>
+                <div className="mb-3">
+                  <label htmlFor="imageUpload" className="form-label">1. Upload Image</label>
+                  <input type="file" className="form-control" id="imageUpload" onChange={handleImageUpload} accept="image/*" />
                 </div>
-                <div className="mt-3"><label className="form-label">Alignment</label><div className="btn-group w-100"><button className={`btn ${activeElement.align === 'left' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'left'); commitChanges();}}>Left</button><button className={`btn ${activeElement.align === 'center' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'center'); commitChanges();}}>Center</button><button className={`btn ${activeElement.align === 'right' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'right'); commitChanges();}}>Right</button></div></div>
-                
-                {/* Background Settings */}
-                <div className="mt-3 p-2 border rounded">
-                  <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.bgColor.enabled} onChange={(e) => {handleNestedChange('bgColor', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Background</label></div>
-                  {activeElement.bgColor.enabled && (<div className="mt-2"><label className="form-label">BG Color</label><input type="color" className="form-control form-control-color" value={activeElement.bgColor.color} onChange={(e) => handleNestedChange('bgColor', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>)}
+                 <div className="d-flex justify-content-between mb-3">
+                  <button className="btn btn-secondary" onClick={undo} disabled={historyIndex === 0}>Undo</button>
+                  <button className="btn btn-secondary" onClick={redo} disabled={historyIndex === history.length - 1}>Redo</button>
                 </div>
-
-                {/* Shadow Settings */}
-                <div className="mt-3 p-2 border rounded">
-                  <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.shadow.enabled} onChange={(e) => {handleNestedChange('shadow', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Shadow</label></div>
-                  {activeElement.shadow.enabled && (<div className="mt-2">
-                    <div className="row g-3">
-                      <div className="col-6"><label className="form-label">Color</label><input type="color" className="form-control form-control-color" value={activeElement.shadow.color} onChange={(e) => handleNestedChange('shadow', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>
-                      <div className="col-6"><label className="form-label">Blur</label><input type="range" className="form-range" min="0" max="50" value={activeElement.shadow.blur} onChange={(e) => handleNestedChange('shadow', 'blur', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
-                      <div className="col-6"><label className="form-label">Offset X</label><input type="range" className="form-range" min="-50" max="50" value={activeElement.shadow.offsetX} onChange={(e) => handleNestedChange('shadow', 'offsetX', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
-                      <div className="col-6"><label className="form-label">Offset Y</label><input type="range" className="form-range" min="-50" max="50" value={activeElement.shadow.offsetY} onChange={(e) => handleNestedChange('shadow', 'offsetY', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
-                    </div>
-                  </div>)}
+                <div className="d-flex justify-content-between">
+                  <button className="btn btn-primary" onClick={saveProject}>Save Project</button>
+                  <label className="btn btn-primary">Load Project<input type="file" hidden onChange={loadProject} accept=".json" /></label>
                 </div>
-                
-                {/* Stroke Settings */}
-                <div className="mt-3 p-2 border rounded">
-                  <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.stroke.enabled} onChange={(e) => {handleNestedChange('stroke', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Stroke (Outline)</label></div>
-                  {activeElement.stroke.enabled && (<div className="mt-2">
-                     <div className="row g-3">
-                        <div className="col-6"><label className="form-label">Color</label><input type="color" className="form-control form-control-color" value={activeElement.stroke.color} onChange={(e) => handleNestedChange('stroke', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>
-                        <div className="col-6"><label className="form-label">Width</label><input type="range" className="form-range" min="1" max="20" value={activeElement.stroke.width} onChange={(e) => handleNestedChange('stroke', 'width', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
-                     </div>
-                  </div>)}
-                </div>
-
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Preview Area */}
-        <div className="col-lg-8">
-          <div className="card sticky-top" style={{ top: '1rem' }}>
-            <div className="card-body">
-              <h5 className="card-title">Preview</h5>
-              <div 
-                ref={canvasContainerRef}
-                className="text-center bg-light" 
-                style={{ position: 'relative', border: '2px dashed #ccc', cursor: interaction.type ? 'grabbing' : 'default', overflow: 'hidden' }}
-              >
-                {image ? (
-                  <>
-                    <canvas
-                      ref={canvasRef}
-                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                      onMouseDown={handleMouseDown}
-                      onMouseMove={handleMouseMove}
-                      onMouseUp={handleMouseUp}
-                      onMouseLeave={handleMouseUp}
-                    />
-                    {guidelines.map((g, i) => {
-                      const style = g.type === 'vertical' 
-                        ? { left: `${(g.x / canvasRef.current.width) * 100}%`, top: 0, width: '1px', height: '100%' }
-                        : { top: `${(g.y / canvasRef.current.height) * 100}%`, left: 0, height: '1px', width: '100%' };
-                      return <div key={i} className="guideline" style={style}></div>
-                    })}
-                  </>
-                ) : (
-                  <div style={{ minHeight: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <p className="text-muted">Upload an image to start</p>
-                  </div>
-                )}
+            {/* Image Filters */}
+            <div className="card mb-3">
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h5 className="card-title mb-0">Image Filters</h5>
+                  <button className="btn btn-sm btn-outline-secondary" onClick={resetFilters}>Reset</button>
+                </div>
+                <div className="row g-3">
+                  <div className="col-6"><label htmlFor="brightness" className="form-label">Brightness</label><input type="range" className="form-range" id="brightness" min="0" max="200" value={imageFilters.brightness} onChange={e => handleFilterChange('brightness', e.target.value)} onMouseUp={() => commitChanges()} /></div>
+                  <div className="col-6"><label htmlFor="contrast" className="form-label">Contrast</label><input type="range" className="form-range" id="contrast" min="0" max="200" value={imageFilters.contrast} onChange={e => handleFilterChange('contrast', e.target.value)} onMouseUp={() => commitChanges()} /></div>
+                  <div className="col-6"><label htmlFor="grayscale" className="form-label">Grayscale</label><input type="range" className="form-range" id="grayscale" min="0" max="100" value={imageFilters.grayscale} onChange={e => handleFilterChange('grayscale', e.target.value)} onMouseUp={() => commitChanges()} /></div>
+                  <div className="col-6"><label htmlFor="sepia" className="form-label">Sepia</label><input type="range" className="form-range" id="sepia" min="0" max="100" value={imageFilters.sepia} onChange={e => handleFilterChange('sepia', e.target.value)} onMouseUp={() => commitChanges()} /></div>
+                </div>
               </div>
-              <button className="btn btn-success w-100 mt-3" onClick={downloadImage} disabled={!image}>
-                Download Final Image
-              </button>
+            </div>
+
+            {/* Text Controls */}
+            <div className="card mb-3">
+              <div className="card-body">
+                <h5 className="card-title">Text Controls</h5>
+                <button className="btn btn-primary w-100 mb-3" onClick={addTextElement}>Add New Text</button>
+                {activeElement && <button className="btn btn-danger w-100" onClick={deleteActiveElement}>Delete Selected Text</button>}
+              </div>
+            </div>
+
+            {/* Active Element Settings */}
+            {activeElement && (
+              <div className="card mb-3 border-primary">
+                <div className="card-body">
+                  <h5 className="card-title">Edit Selected Text</h5>
+                  <div className="mb-3"><label className="form-label">Text</label><textarea className="form-control" rows="2" value={activeElement.text} onChange={(e) => handleElementChange('text', e.target.value)} onBlur={() => commitChanges()}></textarea></div>
+                  <div className="row g-3">
+                    <div className="col-6"><label className="form-label">Font</label><select className="form-select" value={activeElement.font} onChange={(e) => handleElementChange('font', e.target.value)} onBlur={() => commitChanges()}>{fonts.map(f => <option key={f} value={f}>{f}</option>)}</select></div>
+                    <div className="col-6"><label className="form-label">Size</label><input type="number" className="form-control" value={activeElement.size} onChange={(e) => handleElementChange('size', Number(e.target.value))} onBlur={() => commitChanges()}/></div>
+                    <div className="col-md-12">
+                      <label className="form-label">Color</label>
+                      <div className="d-flex align-items-center">
+                        <input type="color" className="form-control form-control-color" value={activeElement.color} onChange={(e) => handleElementChange('color', e.target.value)} onBlur={() => commitChanges()}/>
+                        <span className="ms-2">{activeElement.color}</span>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      {colorPalettes.map(palette => (
+                        <div key={palette.name} className="mt-2">
+                          <label className="form-label palette-name">{palette.name}</label>
+                          <div className="palette-container">
+                            {palette.colors.map(color => (
+                              <div 
+                                key={color}
+                                className="color-swatch"
+                                style={{ backgroundColor: color }}
+                                onClick={() => handleColorSwatchClick(color)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <label className="form-label mb-0">Rotation</label>
+                        <button className="btn btn-sm btn-outline-secondary" onClick={resetRotation}>Reset</button>
+                      </div>
+                      <input type="range" className="form-range" min="-180" max="180" value={activeElement.rotation} onChange={(e) => handleRotationChange(Number(e.target.value))} onMouseUp={handleRotationMouseUp}/>
+                    </div>
+                  </div>
+                  <div className="mt-3"><label className="form-label">Alignment</label><div className="btn-group w-100"><button className={`btn ${activeElement.align === 'left' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'left'); commitChanges();}}>Left</button><button className={`btn ${activeElement.align === 'center' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'center'); commitChanges();}}>Center</button><button className={`btn ${activeElement.align === 'right' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => {handleElementChange('align', 'right'); commitChanges();}}>Right</button></div></div>
+                  
+                  {/* Background Settings */}
+                  <div className="mt-3 p-2 border rounded">
+                    <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.bgColor.enabled} onChange={(e) => {handleNestedChange('bgColor', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Background</label></div>
+                    {activeElement.bgColor.enabled && (<div className="mt-2"><label className="form-label">BG Color</label><input type="color" className="form-control form-control-color" value={activeElement.bgColor.color} onChange={(e) => handleNestedChange('bgColor', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>)}
+                  </div>
+
+                  {/* Shadow Settings */}
+                  <div className="mt-3 p-2 border rounded">
+                    <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.shadow.enabled} onChange={(e) => {handleNestedChange('shadow', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Shadow</label></div>
+                    {activeElement.shadow.enabled && (<div className="mt-2">
+                      <div className="row g-3">
+                        <div className="col-6"><label className="form-label">Color</label><input type="color" className="form-control form-control-color" value={activeElement.shadow.color} onChange={(e) => handleNestedChange('shadow', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>
+                        <div className="col-6"><label className="form-label">Blur</label><input type="range" className="form-range" min="0" max="50" value={activeElement.shadow.blur} onChange={(e) => handleNestedChange('shadow', 'blur', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
+                        <div className="col-6"><label className="form-label">Offset X</label><input type="range" className="form-range" min="-50" max="50" value={activeElement.shadow.offsetX} onChange={(e) => handleNestedChange('shadow', 'offsetX', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
+                        <div className="col-6"><label className="form-label">Offset Y</label><input type="range" className="form-range" min="-50" max="50" value={activeElement.shadow.offsetY} onChange={(e) => handleNestedChange('shadow', 'offsetY', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
+                      </div>
+                    </div>)}
+                  </div>
+                  
+                  {/* Stroke Settings */}
+                  <div className="mt-3 p-2 border rounded">
+                    <div className="form-check form-switch"><input className="form-check-input" type="checkbox" checked={activeElement.stroke.enabled} onChange={(e) => {handleNestedChange('stroke', 'enabled', e.target.checked); commitChanges();}}/><label className="form-check-label">Stroke (Outline)</label></div>
+                    {activeElement.stroke.enabled && (<div className="mt-2">
+                       <div className="row g-3">
+                          <div className="col-6"><label className="form-label">Color</label><input type="color" className="form-control form-control-color" value={activeElement.stroke.color} onChange={(e) => handleNestedChange('stroke', 'color', e.target.value)} onBlur={() => commitChanges()}/></div>
+                          <div className="col-6"><label className="form-label">Width</label><input type="range" className="form-range" min="1" max="20" value={activeElement.stroke.width} onChange={(e) => handleNestedChange('stroke', 'width', Number(e.target.value))} onMouseUp={() => commitChanges()}/></div>
+                       </div>
+                    </div>)}
+                  </div>
+
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Preview Area */}
+          <div className="col-lg-8">
+            <div className="card sticky-top" style={{ top: '1rem' }}>
+              <div className="card-body">
+                <h5 className="card-title">Preview</h5>
+                <div 
+                  ref={canvasContainerRef}
+                  className="text-center bg-light" 
+                  style={{ position: 'relative', border: '2px dashed #ccc', cursor: interaction.type ? 'grabbing' : 'default', overflow: 'hidden' }}
+                >
+                  {image ? (
+                    <>
+                      <canvas
+                        ref={canvasRef}
+                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                      />
+                      {guidelines.map((g, i) => {
+                        const style = g.type === 'vertical' 
+                          ? { left: `${(g.x / canvasRef.current.width) * 100}%`, top: 0, width: '1px', height: '100%' }
+                          : { top: `${(g.y / canvasRef.current.height) * 100}%`, left: 0, height: '1px', width: '100%' };
+                        return <div key={i} className="guideline" style={style}></div>
+                      })}
+                    </>
+                  ) : (
+                    <div style={{ minHeight: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <p className="text-muted">Upload an image to start</p>
+                    </div>
+                  )}
+                </div>
+                <button className="btn btn-success w-100 mt-3" onClick={downloadImage} disabled={!image}>
+                  Download Final Image
+                </button>
+              </div>
             </div>
           </div>
         </div>
